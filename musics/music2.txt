@@ -1,0 +1,3 @@
+<NAME> vibe
+<LEVEL> real
+<MUSIC> music2.mp3

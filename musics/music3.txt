@@ -1,0 +1,3 @@
+<NAME> compilation
+<LEVEL> classic
+<MUSIC> music3.mp3

@@ -1,0 +1,3 @@
+<NAME> salsaa
+<LEVEL> classic
+<MUSIC> music12.mp3

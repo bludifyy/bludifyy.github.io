@@ -1,0 +1,3 @@
+<NAME> boom
+<LEVEL> rare
+<MUSIC> music11.mp3

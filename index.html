@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="Rounded.ico">
+    <title>Bludify</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            color: #FF3F3F;
+        }
+
+        #musicPlayer {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #playlist {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #e6e6e6;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        li:hover {
+            background-color: #d9d9d9;
+        }
+
+        strong {
+            color: #FF3F3F;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Bludify</h1>
+    <div id="musicPlayer">
+        <audio controls id="audioPlayer">
+            Your browser does not support the audio element.
+        </audio>
+        <ul id="playlist"></ul>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const playlist = document.getElementById("playlist");
+            const audioPlayer = document.getElementById("audioPlayer");
+    
+            // Adjust the loop to include more music entries
+            for (let i = 1; i <= 20; i++) {
+                fetch(`musics/music${i}.txt`)
+                    .then(response => response.text())
+                    .then(data => {
+                        const lines = data.split('\n');
+                        const name = lines.find(line => line.startsWith('<NAME>')).split(' ')[1];
+                        const level = lines.find(line => line.startsWith('<LEVEL>')).split(' ')[1];
+                        const musicFile = lines.find(line => line.startsWith('<MUSIC>')).split(' ')[1];
+    
+                        const listItem = document.createElement("li");
+                        listItem.innerHTML = `
+                            <strong>${name}</strong><br>
+                            ${level}<br>
+                            🎵 <em>${musicFile}</em>
+                        `;
+                        playlist.appendChild(listItem);
+    
+                        const audioSource = document.createElement("source");
+                        audioSource.src = `musics/${musicFile}`;
+                        audioSource.type = "audio/mp3";
+                        audioPlayer.appendChild(audioSource);
+                    })
+                    .catch(error => console.error(`Error loading music${i}.txt: ${error.message}`));
+            }
+    
+            // Add event listener to play selected music
+            playlist.addEventListener("click", function (event) {
+                const index = Array.from(playlist.children).indexOf(event.target);
+                if (index !== -1) {
+                    audioPlayer.src = `musics/music${index + 1}.mp3`;
+                    audioPlayer.play();
+                }
+            });
+        });
+    </script>
+    
+</body>
+</html>
